@@ -8,7 +8,7 @@
 </head>
 <body>
   <div class="container">
-    <!-- Login Panel -->
+    <!-- Login Section -->
     <section id="login-section" class="card auth-card hidden">
       <h1>Admin Login</h1>
       <div id="login-error" class="error-banner hidden"></div>
@@ -25,12 +25,13 @@
       </form>
     </section>
 
-    <!-- Dashboard Panel -->
+    <!-- Dashboard Section -->
     <section id="dashboard-section" class="card hidden">
       <header class="dashboard-header">
         <h1>Responses</h1>
         <div class="controls">
           <button id="refresh-btn" class="btn btn-outline">Refresh</button>
+          <button id="clear-all-btn" class="btn btn-danger">Clear All</button>
           <button id="logout-btn" class="btn btn-outline">Logout</button>
         </div>
       </header>
@@ -70,14 +71,8 @@
       </div>
     </section>
   </div>
-    <!-- Add this line before admin.js -->
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="admin.js"></script>
 </body>
 </html>
-
-
-  <script src="admin.js"></script>
-</body>
-</html>
-
