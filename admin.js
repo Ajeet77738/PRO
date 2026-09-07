@@ -4,7 +4,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 // Set your private admin credentials here
 const ADMIN_USER = 'admin';
-const ADMIN_PASS = 'choose_your_password_here';
+const ADMIN_PASS = 'anandpal';
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
