@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Responses</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Login Panel -->
+    <section id="login-section" class="card auth-card hidden">
+      <h1>Admin Login</h1>
+      <div id="login-error" class="error-banner hidden"></div>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" autocomplete="username" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+      </form>
+    </section>
+
+    <!-- Dashboard Panel -->
+    <section id="dashboard-section" class="card hidden">
+      <header class="dashboard-header">
+        <h1>Responses</h1>
+        <div class="controls">
+          <button id="refresh-btn" class="btn btn-outline">Refresh</button>
+          <button id="logout-btn" class="btn btn-outline">Logout</button>
+        </div>
+      </header>
+
+      <!-- Stat Counters -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Yes</div>
+          <div id="stat-yes" class="stat-value">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Maybe</div>
+          <div id="stat-maybe" class="stat-value">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">No</div>
+          <div id="stat-no" class="stat-value">-</div>
+        </div>
+      </div>
+
+      <!-- Tabular Listing -->
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 80px;">ID</th>
+              <th style="width: 140px;">Choice</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="responses-table-body">
+            <tr>
+              <td colspan="3" style="text-align: center; color: var(--text-muted);">Loading responses...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
+

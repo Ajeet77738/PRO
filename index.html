@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Small Question for Rishika Jii</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <main class="card">
+      <h1 class="greeting">Hi, Rishika Jii 👋</h1>
+      
+      <p class="message">
+        I wanted to ask you something honestly and respectfully. There is absolutely no pressure to choose any particular answer.
+      </p>
+
+      <div class="divider"></div>
+
+      <h2 class="question">Would you like to give this a chance?</h2>
+      <p class="disclosure">Your choice will be saved so the sender can see your response later.</p>
+
+      <!-- Action Buttons -->
+      <div id="decision-buttons" class="button-group">
+        <button type="button" class="btn btn-yes" data-choice="yes">Yes 💛</button>
+        <button type="button" class="btn btn-maybe" data-choice="maybe">Maybe 🙂</button>
+        <button type="button" class="btn btn-no" data-choice="no">No, thank you</button>
+      </div>
+
+      <!-- Confirmation Box -->
+      <div id="confirmation-view" class="confirmation-card hidden">
+        <p id="confirmation-message" class="confirmation-text"></p>
+      </div>
+
+      <p class="respect-note">
+        Whatever you choose, your answer will be respected.
+      </p>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
