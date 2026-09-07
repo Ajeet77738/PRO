@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('login-form');
   const loginError = document.getElementById('login-error');
   const refreshBtn = document.getElementById('refresh-btn');
+  const clearAllBtn = document.getElementById('clear-all-btn');
   const logoutBtn = document.getElementById('logout-btn');
   const tableBody = document.getElementById('responses-table-body');
   const statYes = document.getElementById('stat-yes');
@@ -95,6 +96,28 @@ document.addEventListener('DOMContentLoaded', () => {
       tableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: red;">Failed to fetch responses.</td></tr>';
     }
   }
+
+  // Clear all responses handler
+  clearAllBtn.addEventListener('click', async () => {
+    const confirmDelete = window.confirm('Are you sure you want to delete ALL responses? This cannot be undone.');
+    if (!confirmDelete) return;
+
+    try {
+      // Deletes all rows where id is greater than 0
+      const { error } = await supabaseClient
+        .from('responses')
+        .delete()
+        .gt('id', 0);
+
+      if (error) throw error;
+
+      alert('All responses have been cleared.');
+      loadResponses();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to clear responses. Ensure you executed the DELETE policy in Supabase SQL Editor.');
+    }
+  });
 
   loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
