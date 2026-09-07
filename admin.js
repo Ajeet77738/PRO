@@ -1,3 +1,13 @@
+// Add your Supabase credentials here
+const SUPABASE_URL = 'https://ofixhravfmtuuthpavcw.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9maXhocmF2Zm10dXV0aHBhdmN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3OTQ2MDEsImV4cCI6MjEwNDM3MDYwMX0.7qYlmuSXOjcZeYgr4COHl0SAucherfxaOjnsmv8Smno';
+
+// Set your private admin credentials here
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'choose_your_password_here';
+
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 document.addEventListener('DOMContentLoaded', () => {
   const loginSection = document.getElementById('login-section');
   const dashboardSection = document.getElementById('dashboard-section');
@@ -10,40 +20,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const statMaybe = document.getElementById('stat-maybe');
   const statNo = document.getElementById('stat-no');
 
-  // Strict DOM text-escaping to prevent XSS
   function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
   }
 
-  // Format UTC timestamps cleanly
   function formatTimestamp(isoStr) {
     try {
       const d = new Date(isoStr);
-      if (isNaN(d.getTime())) return escapeHtml(isoStr);
-      return d.toLocaleString(undefined, {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
+      return isNaN(d.getTime()) ? escapeHtml(isoStr) : d.toLocaleString();
     } catch {
       return escapeHtml(isoStr);
     }
   }
 
-  async function checkAuth() {
-    try {
-      const res = await fetch('/api/admin/me');
-      const data = await res.json();
-      if (data.authenticated) {
-        showDashboard();
-      } else {
-        showLogin();
-      }
-    } catch {
+  function checkSession() {
+    if (sessionStorage.getItem('isAdmin') === 'true') {
+      showDashboard();
+    } else {
       showLogin();
     }
   }
@@ -61,29 +56,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function loadResponses() {
     try {
-      const res = await fetch('/api/admin/responses');
-      if (res.status === 401) {
-        showLogin();
-        return;
-      }
+      const { data, error } = await supabaseClient
+        .from('responses')
+        .select('*')
+        .order('id', { ascending: false });
 
-      const data = await res.json();
-      if (!data.ok) return;
+      if (error) throw error;
 
-      statYes.textContent = data.stats.yes;
-      statMaybe.textContent = data.stats.maybe;
-      statNo.textContent = data.stats.no;
+      let yes = 0, maybe = 0, no = 0;
+      data.forEach(item => {
+        if (item.choice === 'yes') yes++;
+        else if (item.choice === 'maybe') maybe++;
+        else if (item.choice === 'no') no++;
+      });
+
+      statYes.textContent = yes;
+      statMaybe.textContent = maybe;
+      statNo.textContent = no;
 
       tableBody.innerHTML = '';
-      if (!data.responses || data.responses.length === 0) {
+      if (!data || data.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">No responses recorded yet.</td></tr>';
         return;
       }
 
-      data.responses.forEach(item => {
+      data.forEach(item => {
         const tr = document.createElement('tr');
         const badgeClass = item.choice === 'yes' ? 'badge-yes' : item.choice === 'maybe' ? 'badge-maybe' : 'badge-no';
-
         tr.innerHTML = `
           <td>${escapeHtml(String(item.id))}</td>
           <td><span class="badge ${badgeClass}">${escapeHtml(item.choice)}</span></td>
@@ -92,46 +91,31 @@ document.addEventListener('DOMContentLoaded', () => {
         tableBody.appendChild(tr);
       });
     } catch (err) {
-      console.error('Failed to load responses:', err);
+      console.error(err);
+      tableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: red;">Failed to fetch responses.</td></tr>';
     }
   }
 
-  loginForm.addEventListener('submit', async (e) => {
+  loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
     loginError.classList.add('hidden');
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value;
 
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value;
-
-    try {
-      const res = await fetch('/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-
-      const data = await res.json();
-      if (res.ok && data.ok) {
-        showDashboard();
-      } else {
-        loginError.textContent = data.error || 'Invalid credentials';
-        loginError.classList.remove('hidden');
-      }
-    } catch {
-      loginError.textContent = 'Connection error. Please try again.';
+    if (u === ADMIN_USER && p === ADMIN_PASS) {
+      sessionStorage.setItem('isAdmin', 'true');
+      showDashboard();
+    } else {
+      loginError.textContent = 'Invalid username or password';
       loginError.classList.remove('hidden');
     }
   });
 
-  logoutBtn.addEventListener('click', async () => {
-    try {
-      await fetch('/api/admin/logout', { method: 'POST' });
-    } finally {
-      showLogin();
-    }
+  logoutBtn.addEventListener('click', () => {
+    sessionStorage.removeItem('isAdmin');
+    showLogin();
   });
 
   refreshBtn.addEventListener('click', loadResponses);
-  checkAuth();
+  checkSession();
 });
-
