@@ -1,0 +1,172 @@
+:root {
+  --bg-gradient: radial-gradient(circle at 10% 20%, #fdfbfb 0%, #ebedee 90%);
+  --card-bg: #ffffff;
+  --text-primary: #2d3748;
+  --text-secondary: #718096;
+  --text-muted: #a0aec0;
+  --accent-yes: #b45309;
+  --accent-yes-bg: #fef3c7;
+  --accent-yes-hover: #fde68a;
+  --accent-maybe: #1d4ed8;
+  --accent-maybe-bg: #dbeafe;
+  --accent-maybe-hover: #bfdbfe;
+  --accent-no: #374151;
+  --accent-no-bg: #f3f4f6;
+  --accent-no-hover: #e5e7eb;
+  --border-color: #e2e8f0;
+  --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  padding: 1.5rem;
+}
+
+.container {
+  width: 100%;
+  max-width: 520px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-card);
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+
+.greeting {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  color: #1a202c;
+}
+
+.message {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 1.5rem auto;
+  width: 60%;
+}
+
+.question {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: 0.75rem;
+}
+
+.disclosure {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.9rem 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  width: 100%;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-yes {
+  background-color: var(--accent-yes-bg);
+  color: var(--accent-yes);
+  border-color: #fde68a;
+}
+.btn-yes:hover:not(:disabled) {
+  background-color: var(--accent-yes-hover);
+}
+
+.btn-maybe {
+  background-color: var(--accent-maybe-bg);
+  color: var(--accent-maybe);
+  border-color: #bfdbfe;
+}
+.btn-maybe:hover:not(:disabled) {
+  background-color: var(--accent-maybe-hover);
+}
+
+.btn-no {
+  background-color: var(--accent-no-bg);
+  color: var(--accent-no);
+  border-color: #e5e7eb;
+}
+.btn-no:hover:not(:disabled) {
+  background-color: var(--accent-no-hover);
+}
+
+.confirmation-card {
+  padding: 1.5rem 1rem;
+  background-color: #f8fafc;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+}
+
+.confirmation-text {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.respect-note {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (min-width: 480px) {
+  .button-group {
+    flex-direction: row;
+  }
+  .btn {
+    flex: 1;
+    padding: 0.85rem 0.5rem;
+  }
+}
