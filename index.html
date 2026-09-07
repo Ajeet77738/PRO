@@ -3,48 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A Small Question for Rishika Jii</title>
+  <title>For Rishika Jii</title>
+  <!-- Google Fonts for elevated romantic typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <main class="card">
-      <h1 class="greeting">Hi, Rishika Jii 👋</h1>
+  <!-- Ambient background glow elements -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <main class="wrapper">
+    <div class="proposal-card">
+      <div class="card-tag">A note from the heart</div>
+
+      <h1 class="salutation">Dear Rishika Jii,</h1>
       
-      <p class="message">
-        I wanted to ask you something honestly and respectfully. There is absolutely no pressure to choose any particular answer.
+      <p class="letter-body">
+        Some feelings take time to find the right words, but I wanted to share mine with complete honesty. Knowing you and sharing conversations with you has been truly special.
       </p>
 
-      <div class="divider"></div>
-
-      <h2 class="question">Would you like to give this a chance?</h2>
-      <p class="disclosure">Your choice will be saved so the sender can see your response later.</p>
-
-      <!-- Action Buttons -->
-      <div id="decision-buttons" class="button-group">
-        <button type="button" class="btn btn-yes" data-choice="yes">Yes 💛</button>
-        <button type="button" class="btn btn-maybe" data-choice="maybe">Maybe 🙂</button>
-        <button type="button" class="btn btn-no" data-choice="no">No, thank you</button>
-      </div>
-
-      <!-- Confirmation Box -->
-      <div id="confirmation-view" class="confirmation-card hidden">
-        <p id="confirmation-message" class="confirmation-text"></p>
-      </div>
-
-      <p class="respect-note">
-        Whatever you choose, your answer will be respected.
+      <p class="letter-body">
+        I believe the best chapters begin with genuine respect and mutual understanding. There is no expectation, no rush, and absolutely no pressure—just an honest question from me to you.
       </p>
-    </main>
-  </div>
-    <!-- Add this line before app.js -->
+
+      <div class="signature">
+        <span>Warmly,</span>
+        <strong>Ajeet</strong>
+      </div>
+
+      <div class="divider">
+        <span class="divider-icon">✦</span>
+      </div>
+
+      <h2 class="prompt-heading">Would you like to give us a chance?</h2>
+      <p class="transparency-note">
+        Your response will be saved privately so I can see your answer.
+      </p>
+
+      <!-- Interactive choice buttons -->
+      <div id="decision-buttons" class="actions-grid">
+        <button type="button" class="btn btn-yes" data-choice="yes">
+          <span class="btn-text">Yes, let's try</span>
+          <span class="btn-emoji">💛</span>
+        </button>
+
+        <button type="button" class="btn btn-maybe" data-choice="maybe">
+          <span class="btn-text">Let's talk more first</span>
+          <span class="btn-emoji">🙂</span>
+        </button>
+
+        <button type="button" class="btn btn-no" data-choice="no">
+          <span class="btn-text">No, thank you</span>
+          <span class="btn-emoji">🤍</span>
+        </button>
+      </div>
+
+      <!-- Confirmation state after selection -->
+      <div id="confirmation-view" class="response-feedback hidden">
+        <div class="feedback-icon">💌</div>
+        <p id="confirmation-message" class="feedback-text"></p>
+      </div>
+
+      <footer class="footer-quote">
+        Whatever your heart chooses, it will be cherished and respected completely.
+      </footer>
+    </div>
+  </main>
+
+  <!-- Supabase client for static GitHub Pages delivery -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
 </body>
 </html>
-
-
-  <script src="app.js"></script>
-</body>
-</html>
-
