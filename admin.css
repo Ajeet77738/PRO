@@ -6,6 +6,8 @@
   --border: #e2e8f0;
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
 }
 
 * {
@@ -89,6 +91,7 @@ body {
 .controls {
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .btn {
@@ -98,7 +101,7 @@ body {
   font-size: 0.9rem;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .btn-primary {
@@ -107,6 +110,16 @@ body {
 }
 .btn-primary:hover {
   background-color: var(--primary-hover);
+}
+
+.btn-danger {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+.btn-danger:hover {
+  background-color: #fca5a5;
+  color: #7f1d1d;
 }
 
 .btn-outline {
@@ -204,4 +217,3 @@ th {
 .hidden {
   display: none !important;
 }
-
