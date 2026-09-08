@@ -341,3 +341,49 @@ body {
     font-size: 2.1rem;
   }
 }
+/* Message note box styling */
+.note-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(244, 114, 182, 0.25);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 1.75rem;
+  text-align: center;
+  animation: popIn 0.35s ease forwards;
+}
+
+.note-prompt {
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.note-card textarea {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 0.85rem;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  resize: vertical;
+  margin-bottom: 1rem;
+  outline: none;
+}
+
+.note-card textarea:focus {
+  border-color: var(--primary-coral);
+  box-shadow: 0 0 10px rgba(251, 113, 133, 0.2);
+}
+
+.note-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.note-actions .btn {
+  flex: 1;
+}
