@@ -202,3 +202,102 @@ function initAmbientHearts() {
 
   animate();
 }
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof initAmbientHearts === 'function') initAmbientHearts();
+  if (typeof initTouchHearts === 'function') initTouchHearts();
+
+  const buttons = document.querySelectorAll('#decision-buttons button');
+  const buttonGroup = document.getElementById('decision-buttons');
+  const noteSection = document.getElementById('optional-note-section');
+  const noteInput = document.getElementById('visitor-note');
+  const submitNoteBtn = document.getElementById('submit-note-btn');
+  const skipNoteBtn = document.getElementById('skip-note-btn');
+  const confirmationView = document.getElementById('confirmation-view');
+  const confirmationMessage = document.getElementById('confirmation-message');
+  const feedbackIcon = document.getElementById('feedback-icon');
+
+  const messages = {
+    yes: 'Thank you for giving this a chance. You made my day so very special! 💛',
+    maybe: 'Thank you for your honesty. I look forward to getting to know you better 🙂',
+    no: 'Thank you for being open and honest. Your decision is respected completely 🤍'
+  };
+
+  const icons = {
+    yes: '✨💛✨',
+    maybe: '🌸✨',
+    no: '🤍'
+  };
+
+  let savedRecordId = null;
+
+  function showFinalConfirmation(choice) {
+    noteSection.classList.add('hidden');
+    buttonGroup.classList.add('hidden');
+    feedbackIcon.textContent = icons[choice] || '💌';
+    confirmationMessage.textContent = messages[choice];
+    confirmationView.classList.remove('hidden');
+  }
+
+  buttons.forEach(button => {
+    button.addEventListener('click', async (e) => {
+      const choice = button.getAttribute('data-choice');
+      if (!choice) return;
+
+      if (choice === 'yes' && typeof launchHeartConfetti === 'function') {
+        launchHeartConfetti(e.clientX, e.clientY);
+      }
+
+      buttons.forEach(b => (b.disabled = true));
+
+      try {
+        // Save initial choice to Supabase
+        const { data, error } = await supabaseClient
+          .from('responses')
+          .insert([{ choice }])
+          .select();
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          savedRecordId = data[0].id;
+        }
+
+        buttonGroup.classList.add('hidden');
+
+        // If Yes, show the optional message prompt
+        if (choice === 'yes') {
+          noteSection.classList.remove('hidden');
+        } else {
+          showFinalConfirmation(choice);
+        }
+      } catch (err) {
+        alert('Could not save your choice. Please check connection.');
+        buttons.forEach(b => (b.disabled = false));
+      }
+    });
+  });
+
+  // Submit optional note
+  submitNoteBtn.addEventListener('click', async () => {
+    const text = noteInput.value.trim();
+    if (text && savedRecordId) {
+      submitNoteBtn.disabled = true;
+      skipNoteBtn.disabled = true;
+      try {
+        await supabaseClient
+          .from('responses')
+          .update({ message: text })
+          .eq('id', savedRecordId);
+      } catch (err) {
+        console.error('Note update failed:', err);
+      }
+    }
+    showFinalConfirmation('yes');
+  });
+
+  // Skip note
+  skipNoteBtn.addEventListener('click', () => {
+    showFinalConfirmation('yes');
+  });
+});
+
