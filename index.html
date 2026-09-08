@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>For Rishika Jii ✨</title>
   
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,10 +12,8 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Floating ambient heart canvas -->
+  <!-- Ambient background elements -->
   <canvas id="heart-canvas"></canvas>
-
-  <!-- Dynamic ambient color orbs -->
   <div class="color-orb orb-rose"></div>
   <div class="color-orb orb-coral"></div>
   <div class="color-orb orb-gold"></div>
@@ -30,7 +27,7 @@
       <h1 class="salutation">Dear Rishika Jii,</h1>
       
       <p class="letter-body">
-        Some feelings take time to find the right words, but I wanted to share mine with complete honesty. Knowing you and sharing our conversations has brought so much warmth and happiness into my life.
+        Some feelings take time to find the right words, but I wanted to share mine with complete honesty. Knowing you and sharing our conversations has brought so much warmth into my life.
       </p>
 
       <p class="letter-body">
@@ -51,8 +48,7 @@
         Your response will be privately saved so I can read it later.
       </p>
 
-      <!-- Decision buttons -->
-            <!-- Decision buttons -->
+      <!-- Single set of buttons -->
       <div id="decision-buttons" class="buttons-stack">
         <button type="button" class="btn btn-yes" data-choice="yes">
           <span class="btn-text">Yes, let's try 💛</span>
@@ -86,27 +82,6 @@
         <div class="feedback-icon" id="feedback-icon">💌</div>
         <p id="confirmation-message" class="feedback-text"></p>
       </div>
-      
-      <div id="decision-buttons" class="buttons-stack">
-        <button type="button" class="btn btn-yes" data-choice="yes">
-          <span class="btn-glow"></span>
-          <span class="btn-text">Yes, let's try 💛</span>
-        </button>
-
-        <button type="button" class="btn btn-maybe" data-choice="maybe">
-          <span class="btn-text">Let's talk more first 🙂</span>
-        </button>
-
-        <button type="button" class="btn btn-no" data-choice="no">
-          <span class="btn-text">No, thank you 🤍</span>
-        </button>
-      </div>
-
-      <!-- Result state -->
-      <div id="confirmation-view" class="response-feedback hidden">
-        <div class="feedback-icon" id="feedback-icon">💌</div>
-        <p id="confirmation-message" class="feedback-text"></p>
-      </div>
 
       <footer class="footer-note">
         Whatever your heart decides, it will always be cherished and respected.
@@ -114,7 +89,6 @@
     </div>
   </main>
 
-  <!-- Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
 </body>
