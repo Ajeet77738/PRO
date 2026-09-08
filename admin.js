@@ -1,8 +1,5 @@
-// Add your Supabase credentials here
 const SUPABASE_URL = 'https://ofixhravfmtuuthpavcw.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9maXhocmF2Zm10dXV0aHBhdmN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3OTQ2MDEsImV4cCI6MjEwNDM3MDYwMX0.7qYlmuSXOjcZeYgr4COHl0SAucherfxaOjnsmv8Smno';
-
-// Set your private admin credentials here
 const ADMIN_USER = 'admin';
 const ADMIN_PASS = 'anandpal';
 
@@ -59,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const { data, error } = await supabaseClient
         .from('responses')
-        .select('*')
+        .select('id, choice, message, created_at')
         .order('id', { ascending: false });
 
       if (error) throw error;
@@ -77,45 +74,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
       tableBody.innerHTML = '';
       if (!data || data.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">No responses recorded yet.</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No responses recorded yet.</td></tr>';
         return;
       }
 
       data.forEach(item => {
         const tr = document.createElement('tr');
         const badgeClass = item.choice === 'yes' ? 'badge-yes' : item.choice === 'maybe' ? 'badge-maybe' : 'badge-no';
+        const msgText = (item.message && item.message.trim() !== '') 
+          ? escapeHtml(item.message) 
+          : '<span style="color:#94a3b8; font-style:italic;">No note</span>';
+
         tr.innerHTML = `
           <td>${escapeHtml(String(item.id))}</td>
           <td><span class="badge ${badgeClass}">${escapeHtml(item.choice)}</span></td>
+          <td style="max-width: 250px; word-break: break-word;">${msgText}</td>
           <td>${formatTimestamp(item.created_at)}</td>
         `;
         tableBody.appendChild(tr);
       });
     } catch (err) {
       console.error(err);
-      tableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: red;">Failed to fetch responses.</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: red;">Failed to load responses.</td></tr>';
     }
   }
 
-  // Clear all responses handler
   clearAllBtn.addEventListener('click', async () => {
-    const confirmDelete = window.confirm('Are you sure you want to delete ALL responses? This cannot be undone.');
-    if (!confirmDelete) return;
-
+    if (!window.confirm('Delete ALL responses permanently?')) return;
     try {
-      // Deletes all rows where id is greater than 0
-      const { error } = await supabaseClient
-        .from('responses')
-        .delete()
-        .gt('id', 0);
-
+      const { error } = await supabaseClient.from('responses').delete().gt('id', 0);
       if (error) throw error;
-
-      alert('All responses have been cleared.');
       loadResponses();
     } catch (err) {
       console.error(err);
-      alert('Failed to clear responses. Ensure you executed the DELETE policy in Supabase SQL Editor.');
+      alert('Failed to clear responses.');
     }
   });
 
@@ -129,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
       sessionStorage.setItem('isAdmin', 'true');
       showDashboard();
     } else {
-      loginError.textContent = 'Invalid username or password';
+      loginError.textContent = 'Invalid credentials';
       loginError.classList.remove('hidden');
     }
   });
@@ -142,17 +134,3 @@ document.addEventListener('DOMContentLoaded', () => {
   refreshBtn.addEventListener('click', loadResponses);
   checkSession();
 });
-      data.forEach(item => {
-        const tr = document.createElement('tr');
-        const badgeClass = item.choice === 'yes' ? 'badge-yes' : item.choice === 'maybe' ? 'badge-maybe' : 'badge-no';
-        const msgText = item.message ? escapeHtml(item.message) : '<span style="color:#94a3b8; font-style:italic;">No note</span>';
-
-        tr.innerHTML = `
-          <td>${escapeHtml(String(item.id))}</td>
-          <td><span class="badge ${badgeClass}">${escapeHtml(item.choice)}</span></td>
-          <td style="max-width: 260px; word-break: break-word;">${msgText}</td>
-          <td>${formatTimestamp(item.created_at)}</td>
-        `;
-        tableBody.appendChild(tr);
-      });
-
