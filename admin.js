@@ -142,3 +142,17 @@ document.addEventListener('DOMContentLoaded', () => {
   refreshBtn.addEventListener('click', loadResponses);
   checkSession();
 });
+      data.forEach(item => {
+        const tr = document.createElement('tr');
+        const badgeClass = item.choice === 'yes' ? 'badge-yes' : item.choice === 'maybe' ? 'badge-maybe' : 'badge-no';
+        const msgText = item.message ? escapeHtml(item.message) : '<span style="color:#94a3b8; font-style:italic;">No note</span>';
+
+        tr.innerHTML = `
+          <td>${escapeHtml(String(item.id))}</td>
+          <td><span class="badge ${badgeClass}">${escapeHtml(item.choice)}</span></td>
+          <td style="max-width: 260px; word-break: break-word;">${msgText}</td>
+          <td>${formatTimestamp(item.created_at)}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+
