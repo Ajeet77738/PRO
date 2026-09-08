@@ -1,3 +1,4 @@
+// Paste your actual Supabase URL & anon key here
 const SUPABASE_URL = 'https://ofixhravfmtuuthpavcw.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9maXhocmF2Zm10dXV0aHBhdmN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3OTQ2MDEsImV4cCI6MjEwNDM3MDYwMX0.7qYlmuSXOjcZeYgr4COHl0SAucherfxaOjnsmv8Smno';
 
@@ -29,93 +30,83 @@ document.addEventListener('DOMContentLoaded', () => {
     no: '🤍'
   };
 
-  let selectedChoice = null;
-
-  async function saveToSupabase(choice, messageText = null) {
-    try {
-      const payload = { choice };
-      if (messageText && messageText.trim().length > 0) {
-        payload.message = messageText.trim();
-      }
-
-      const { error } = await supabaseClient
-        .from('responses')
-        .insert([payload]);
-
-      if (error) {
-        console.error('Supabase insert error:', error);
-        alert('Could not save your choice. Please try again.');
-        return false;
-      }
-      return true;
-    } catch (err) {
-      console.error('Network error:', err);
-      alert('Network error. Please try again.');
-      return false;
-    }
-  }
+  let isSubmitting = false;
 
   function showConfirmation(choice) {
+    if (noteSection) noteSection.classList.add('hidden');
     buttonGroup.classList.add('hidden');
-    noteSection.classList.add('hidden');
     feedbackIcon.textContent = icons[choice] || '💌';
     confirmationMessage.textContent = messages[choice];
     confirmationView.classList.remove('hidden');
   }
 
-  buttons.forEach(button => {
-    button.addEventListener('click', async (e) => {
-      const choice = button.getAttribute('data-choice');
-      if (!choice) return;
+  // Single function that performs exactly ONE insert
+  async function submitFinalResponse(choice, userMessage) {
+    if (isSubmitting) return;
+    isSubmitting = true;
 
-      selectedChoice = choice;
+    try {
+      const payload = {
+        choice: choice,
+        message: userMessage && userMessage.trim().length > 0 ? userMessage.trim() : null
+      };
+
+      const { error } = await supabaseClient
+        .from('responses')
+        .insert([payload]);
+
+      if (error) throw error;
+
+      showConfirmation(choice);
+    } catch (err) {
+      console.error('Submission failed:', err);
+      alert('Could not save your choice. Please try again.');
+      isSubmitting = false;
+      buttons.forEach(b => (b.disabled = false));
+      if (submitNoteBtn) submitNoteBtn.disabled = false;
+      if (skipNoteBtn) skipNoteBtn.disabled = false;
+    }
+  }
+
+  buttons.forEach(button => {
+    button.addEventListener('click', (e) => {
+      const choice = button.getAttribute('data-choice');
+      if (!choice || isSubmitting) return;
 
       if (choice === 'yes') {
         if (typeof launchHeartConfetti === 'function') {
           launchHeartConfetti(e.clientX, e.clientY);
         }
-        // Hide initial buttons and reveal the optional note box
+        // ONLY reveal note box. DO NOT save to database yet!
         buttonGroup.classList.add('hidden');
-        noteSection.classList.remove('hidden');
-      } else {
-        // For 'maybe' or 'no', save immediately without asking for a note
-        buttons.forEach(b => (b.disabled = true));
-        const ok = await saveToSupabase(choice, null);
-        if (ok) {
-          showConfirmation(choice);
+        if (noteSection) {
+          noteSection.classList.remove('hidden');
         } else {
-          buttons.forEach(b => (b.disabled = false));
+          submitFinalResponse('yes', null);
         }
+      } else {
+        // For Maybe or No, save immediately
+        buttons.forEach(b => (b.disabled = true));
+        submitFinalResponse(choice, null);
       }
     });
   });
 
-  submitNoteBtn.addEventListener('click', async () => {
-    submitNoteBtn.disabled = true;
-    skipNoteBtn.disabled = true;
+  // Tap Send Note -> Creates the single 'yes' entry with the note
+  if (submitNoteBtn) {
+    submitNoteBtn.addEventListener('click', () => {
+      submitNoteBtn.disabled = true;
+      skipNoteBtn.disabled = true;
+      submitFinalResponse('yes', noteInput.value);
+    });
+  }
 
-    const text = noteInput.value;
-    const ok = await saveToSupabase(selectedChoice, text);
-
-    if (ok) {
-      showConfirmation(selectedChoice);
-    } else {
-      submitNoteBtn.disabled = false;
-      skipNoteBtn.disabled = false;
-    }
-  });
-
-  skipNoteBtn.addEventListener('click', async () => {
-    submitNoteBtn.disabled = true;
-    skipNoteBtn.disabled = true;
-
-    const ok = await saveToSupabase(selectedChoice, null);
-
-    if (ok) {
-      showConfirmation(selectedChoice);
-    } else {
-      submitNoteBtn.disabled = false;
-      skipNoteBtn.disabled = false;
-    }
-  });
+  // Tap Skip -> Creates the single 'yes' entry with no note
+  if (skipNoteBtn) {
+    skipNoteBtn.addEventListener('click', () => {
+      submitNoteBtn.disabled = true;
+      skipNoteBtn.disabled = true;
+      submitFinalResponse('yes', null);
+    });
+  }
 });
