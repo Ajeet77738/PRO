@@ -52,6 +52,41 @@
       </p>
 
       <!-- Decision buttons -->
+            <!-- Decision buttons -->
+      <div id="decision-buttons" class="buttons-stack">
+        <button type="button" class="btn btn-yes" data-choice="yes">
+          <span class="btn-text">Yes, let's try 💛</span>
+        </button>
+
+        <button type="button" class="btn btn-maybe" data-choice="maybe">
+          <span class="btn-text">Let's talk more first 🙂</span>
+        </button>
+
+        <button type="button" class="btn btn-no" data-choice="no">
+          <span class="btn-text">No, thank you 🤍</span>
+        </button>
+      </div>
+
+      <!-- Optional message box on 'Yes' -->
+      <div id="optional-note-section" class="note-card hidden">
+        <p class="note-prompt">Would you like to leave a little message? (Optional)</p>
+        <textarea id="visitor-note" rows="3" placeholder="Write anything on your mind..." maxlength="500"></textarea>
+        <div class="note-actions">
+          <button type="button" id="submit-note-btn" class="btn btn-yes" style="padding: 0.8rem 1.2rem;">
+            Send Note 💌
+          </button>
+          <button type="button" id="skip-note-btn" class="btn btn-no" style="padding: 0.8rem 1.2rem;">
+            Skip
+          </button>
+        </div>
+      </div>
+
+      <!-- Result state -->
+      <div id="confirmation-view" class="response-feedback hidden">
+        <div class="feedback-icon" id="feedback-icon">💌</div>
+        <p id="confirmation-message" class="feedback-text"></p>
+      </div>
+      
       <div id="decision-buttons" class="buttons-stack">
         <button type="button" class="btn btn-yes" data-choice="yes">
           <span class="btn-glow"></span>
