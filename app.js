@@ -110,3 +110,41 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// --- Touch / Click Hearts Effect ---
+function initTouchHearts() {
+  const heartSymbols = ['💖', '✨', '🌸', '💛', '🤍'];
+
+  function createHeart(x, y) {
+    const heart = document.createElement('div');
+    heart.className = 'touch-heart';
+    heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+    
+    // Spawn at tap position with a tiny random jitter
+    heart.style.left = `${x + (Math.random() * 20 - 10)}px`;
+    heart.style.top = `${y + (Math.random() * 20 - 10)}px`;
+    
+    document.body.appendChild(heart);
+
+    // Remove element after animation ends
+    setTimeout(() => {
+      heart.remove();
+    }, 1200);
+  }
+
+  // Handle mobile taps
+  window.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    if (touch) {
+      createHeart(touch.clientX, touch.clientY);
+    }
+  }, { passive: true });
+
+  // Handle desktop clicks
+  window.addEventListener('click', (e) => {
+    // Avoid re-triggering if clicked directly on input or button
+    if (['BUTTON', 'TEXTAREA', 'INPUT'].includes(e.target.tagName)) return;
+    createHeart(e.clientX, e.clientY);
+  });
+}
+
