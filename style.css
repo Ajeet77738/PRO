@@ -387,3 +387,29 @@ body {
 .note-actions .btn {
   flex: 1;
 }
+
+/* Touch Heart Animation */
+.touch-heart {
+  position: fixed;
+  pointer-events: none;
+  font-size: 1.4rem;
+  z-index: 9999;
+  user-select: none;
+  animation: floatUpFade 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes floatUpFade {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.6) rotate(0deg);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translate(-50%, -80px) scale(1.15) rotate(15deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -140px) scale(1) rotate(-10deg);
+  }
+}
+
